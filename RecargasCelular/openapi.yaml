@@ -1,0 +1,116 @@
+openapi: 3.0.0
+info:
+  title: API para recarga de celular
+  description: Uma API responsável por gerenciar o processo de recarga no celular do cliente.
+  version: 1.0.0
+  contact:
+    name: Lucas do Nascimento
+    email: lucasnm@algartelecom.com.br
+paths:
+  /registerClient:
+    post:
+      summary: Registra um novo cliente no banco de dados
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Client'
+      responses:
+        default:
+        '200':
+          description: Usuário cadastrado
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /registerPayment:
+    post:
+      summary: Registra um método de pagamento para o usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#conponents/schema/Payments'
+      responses:
+        default:
+        '200':
+          description: Método de pagamento cadastrado
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /recharge:
+    post:
+      summary: Realiza uma recarga para um cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'components/schema/Recharge'
+      responses:
+        default:
+        '200':
+          description: Recarga efetuada com sucesso
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /listRecharge:
+    get:
+      summary: Lista todas as recargas já efetuadas
+      responses:
+        default:
+        '200':
+          description: Lista as recargas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recharge'
+components:
+  schemas:
+    Client:
+      type: object
+      properties:
+        cpf:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: integer
+    Payments:
+      type: object
+      properties:
+        id:
+          type: integer
+        creditCardNumber:
+          type: integer
+        creditCardName:
+          type: string
+        validThru:
+          type: string
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+        password:
+          type: string
+        idClient:
+          type: integer
+    Recharge:
+      type: object
+      properties:
+        idRecharge:
+          type: integer
+        price:
+          type: number
+          format: float
+        rechargeTime:
+          type: string
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+        cpf:
+          type: integer
+        idPayments:
+          type: integer
